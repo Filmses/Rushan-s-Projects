@@ -24,49 +24,57 @@ def tictactoe_board(dashes):
         else:
             print("", dashes[str(index)], "")
 
-
-def win_check(board, solutions, player1, player2):
+def player1Won(board, solutions):
+    win = None
     for tuple in solutions:
-        player1Spaces = 0
-        player2Spaces = 0
-
-        for num in tuple:
-            if board[str(num)] == player1:
-                player1Spaces += 1
-            elif board[str(num)] == player2:
-                player2Spaces += 1
-
-        if player1Spaces == 3:
-            winner = 1
-        elif player2Spaces == 3:
-            winner = 2
+        if board[str(tuple[0])] == "X" and board[str(tuple[1])] == "X" and board[str(tuple[2])] == "X":
+            win = True
+            break
         else:
-            winner = 0
-    print("checking")
-    return winner
+            pass
+
+    if win != True:
+        win = False
+    return win
+        
+def player2Won(board, solutions):
+    win = None
+    for tuple in solutions:
+        if board[str(tuple[0])] == "O" and board[str(tuple[1])] == "O" and board[str(tuple[2])] == "O":
+            win = True
+            break
+        else:
+            pass
+        
+    if win != True:
+        win = False
+    return win
 
 
-j = 1
+player = 1
 
 print("Spaces on the board are represented by numbers, so to place your X or O in a space, type the space number you want to use.")
 tictactoe_board(ticTacToe)
 for index, item in enumerate(ticTacToe, 1):
     ticTacToe[str(index)] = " "
 
-for i in range(1,10):
-    if j == 1:
-        while j == 1:
-            print("Player 1, select a number from the board (only 1-9)")
-            space = input()
+for turns in range(1,10):
+    if player == 1:
+        while player == 1:
+            if turns >= 5 and player1Won(ticTacToe, possibleSolutions) or turns >= 5 and player2Won(ticTacToe, possibleSolutions):
+                break
+            else:
+                print("Player 1, select a number from the board (only 1-9)")
+                space = input()
 
-            #try:
-            if i >= 5 and win_check(ticTacToe, possibleSolutions, "X", "O") == 1 or i >= 5 and win_check(ticTacToe, possibleSolutions, "X", "O") == 2:
-                    j = 2
-            if ticTacToe[space] == "O":
+            try:
+
+                if ticTacToe[space] == "O":
                     print("That space is already taken! Try again!")
                     tictactoe_board(ticTacToe)
                     pass
-            else:
+                else:
+                    
                     if ticTacToe[space] == "X":
                         print("You have already used this space! Try again!")
                         tictactoe_board(ticTacToe)
@@ -74,25 +82,28 @@ for i in range(1,10):
                     else:
                         ticTacToe[space] = "X"
                         tictactoe_board(ticTacToe)
-                        j = 2
-            #except:
-                #print("You did not type a valid number or input. Please try again!")
-                #tictactoe_board(ticTacToe)
-                #pass
+                        player = 2
+            except:
+                print("You did not type a valid number or input. Please try again!")
+                tictactoe_board(ticTacToe)
+                pass
             
-    elif j == 2:
-        while j == 2:
-            print("Player 2, select a number from the board (only 1-9)")
-            space = input()
+    elif player == 2:
+        while player == 2:
+            if turns >= 5 and player1Won(ticTacToe, possibleSolutions) or turns >= 5 and player2Won(ticTacToe, possibleSolutions):
+                break
+            else:
+                print("Player 2, select a number from the board (only 1-9)")
+                space = input()
 
-            #try:
-            if i >= 5 and win_check(ticTacToe, possibleSolutions, "X", "O") == 1 or i >= 5 and win_check(ticTacToe, possibleSolutions, "X", "O") == 2:
-                    j = 1
-            if ticTacToe[space] == "X":
+            try:
+
+                if ticTacToe[space] == "X":
                     print("That space is already taken! Try again!")
                     tictactoe_board(ticTacToe)
                     pass
-            else:
+                else:
+                    
                     if ticTacToe[space] == "O":
                         print("You have already used this space! Try again!")
                         tictactoe_board(ticTacToe)
@@ -100,15 +111,17 @@ for i in range(1,10):
                     else:
                         ticTacToe[space] = "O"
                         tictactoe_board(ticTacToe)
-                        j = 1
-            #except:
-                #print("You did not type a valid number or input. Please try again!")
-                #tictactoe_board(ticTacToe)
-                #pass
+                        player = 1
+            except:
+                print("You did not type a valid number or input. Please try again!")
+                tictactoe_board(ticTacToe)
+                pass
 
-if win_check(ticTacToe, possibleSolutions, "X", "O") == 1:
+if player1Won(ticTacToe, possibleSolutions):
     print("Player 1 has won the game!")
-elif win_check(ticTacToe, possibleSolutions, "X", "O") == 2:
+
+elif player2Won(ticTacToe, possibleSolutions):
     print("Player 2 has won the game!")
+
 else:
     print("This game has concluded in a tie!")
